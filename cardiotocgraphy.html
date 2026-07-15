@@ -1,0 +1,743 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Sierra Brock Portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>Fetal Health Prediction Model</h1>
+								</header>
+								
+								<div style="width:600px; margin:auto;">
+								<img src="images/fetus.jpg" alt="My Photo" width="600">
+
+								<p style="margin-top:8px; text-align:left;">
+									Watch video presentation here.
+								</p>
+								</div>
+
+								<!-- Table of Contents -->
+								<h2>Table of Contents</h2>
+								<ul>
+								<li><a href="#objective">Objective</a></li>
+								<li><a href="#executive_summary">Executive Summary</a></li>
+								<li><a href="#dataset_overview">Data Set Overview</a></li>
+								<li><a href="#data_cleaning_and_Preprocessing">Data Cleaning and Preprocessing</a></li>
+								<li><a href="#exploratory_data_analysis">Exploratory Data Analysis</a></li>
+								<li><a href="#feature_engineering_and_selection">Feature Engineering and Selection</a></li>
+								<li><a href="#model_development">Model Development</a></li>
+								<li><a href="#model_evaluation">Model Evaluation</a></li>
+								<li><a href="#conclusion">Conclusion</a></li>
+								<li><a href="#references">References</a></li>
+								</ul>
+
+								<!-- Text stuff -->
+								<section id="objective">
+									<h2>Objective</h2>
+									<p>The objective of this project was to develop and evaluate a machine learning model capable of
+										accurately classifying fetal health as Normal, Suspect, or
+										Pathological using cardiotocography (CTG) measurements. To achieve this
+										objective, multiple supervised learning algorithms were trained and compared using a publicly
+										available dataset from the UCI Machine Learning Repository.
+									</p>
+
+									<p><strong>Specific objectives included:</strong></p>
+
+									<ul>
+										<li>Preparing the dataset through data cleaning, duplicate removal, feature selection, and handling of missing values.</li>
+										<li>Identifying and removing redundant or highly correlated features to improve model efficiency and reduce multicollinearity.</li>
+										<li>Training and comparing Logistic Regression, Decision Tree, Random Forest, Support Vector Machine (SVM), and Neural Network classifiers.</li>
+										<li>Optimizing the best-performing model using hyperparameter tuning with five-fold cross-validation.</li>
+										<li>Evaluating model performance using accuracy, precision, recall, F1-score, confusion matrices, and ROC curves while accounting for class imbalance through macro-averaged metrics.</li>
+										<li>Selecting a final model that provides both high predictive performance and practical interpretability for potential clinical decision support.</li>
+									</ul>
+
+									<p>
+										The ultimate goal was to determine whether machine learning could reliably assist in the
+										automated classification of fetal health, thereby supporting clinicians in identifying
+										pregnancies that may require additional monitoring or intervention.</p>
+									<hr />
+								</section>
+
+								<section id="executive_summary">
+									<h2>Executive Summary</h2>
+									<p>Cardiotocography (CTG) is a non-invasive monitoring technique used during 
+										pregnancy to evaluate fetal well-being by analyzing fetal heart rate 
+										patterns and uterine contractions. Accurate interpretation of CTG 
+										recordings is essential for identifying fetuses at risk of complications; 
+										however, manual interpretation can be subjective and may vary among clinicians. 
+										Machine learning offers the potential to improve diagnostic consistency by 
+										automatically classifying fetal health based on physiological measurements.</p>
+
+										This project developed and evaluated multiple supervised machine learning models 
+										to classify fetal health as Normal, Suspect, or Pathological using the 
+										Cardiotocography dataset from the UCI Machine Learning Repository. The dataset 
+										underwent extensive preprocessing, including removal of incomplete and duplicate 
+										records, elimination of redundant and highly correlated features, and evaluation 
+										of potential outliers. Five classification algorithms—Logistic Regression, 
+										Decision Tree, Random Forest, Support Vector Machine (SVM), and Neural 
+										Network—were trained and compared using a consistent train-test split and 
+										appropriate preprocessing techniques. </p>
+
+										Model performance was evaluated using accuracy, precision, recall, F1-score, 
+										receiver operating characteristic (ROC) curves, and macro-averaged metrics to 
+										account for class imbalance. Although the SVM achieved slightly higher overall 
+										performance during comparison, the Random Forest model was selected as the final 
+										model because it provided nearly identical predictive performance while offering 
+										greater interpretability and computational efficiency. Hyperparameter 
+										optimization using five-fold cross-validation resulted in a mean validation 
+										accuracy of 99.1%. </p>
+
+										The final Random Forest model achieved a test accuracy of 98.1%, a macro-average 
+										F1-score of 0.97, and excellent discrimination across all classes, with ROC AUC 
+										values of 0.992 for the Normal class, 0.979 for the Suspect class, and 1.000 for 
+										the Pathological class. The model demonstrated particularly strong performance 
+										in distinguishing normal and pathological fetal health, making it a promising 
+										decision-support tool for assisting clinicians in the interpretation of 
+										cardiotocography recordings. </p>
+
+
+									<hr />
+								</section>
+
+								<section id="dataset_overview">
+									<h2>Dataset Overview</h2>
+									<p>The data was aquired from UC Irving Machine Learning Repository and can be found 
+									<a href="https://archive.ics.uci.edu/dataset/193/cardiotocography" target="_blank" rel="noopener noreferrer">here</a>.
+									It comprised 21 variables and 2,126 instances. The features chosen for the study were LBE, LB, 
+									AC, FM, UC, DL, DS, DP, ASTV, MSTV, ALTV, MLTV, min, mean, variance, tendency, A, B, C, D, E, AD, 
+									DE, LD, FS, SUSP, CLASS, and NSP. LB represents the 
+									baseline (or average) heart rate of the fetus. Our data had a min of 106 
+									bpm and a max of 160 bpm. This range is average for a fetal heart rate 
+									(Source Hopkins medicine). The minimum possible heart rate of a fetus is 55 
+									bpm (source ajog). NSP stands for normal, suspect, and pathological and 
+									this was the target variable for the study.</p> 
+									The min, max, and mean values in the Dataset Attributes table represent the minimum and 
+									maximum, and mean values in the dataset. Most of the minimum values are 
+									around zero except for LB (baseline heart beat) and Median (which represents 
+									the median of a FHR histogram). This makes sense because it would be 
+									impossible to have a heart rate of zero. However, the other features 
+									that represent the change in heart rate patterns, like # of light 
+									decelerations per minute or mean value of long term variability are able 
+									to have a value of 0.</p>
+
+									<!-- Table -->
+									<h3 style="text-align: center;">Dataset Attributes</h3>
+
+									<div class="table-wrapper">
+									<table class="alt">
+
+										<thead>
+											<tr>
+												<th>Attribute</th>
+												<th>Type</th>
+												<th>Description</th>
+												<th>Min Value</th>
+												<th>Max Value</th>
+												<th>Mean Value</th>
+											</tr>
+										</thead>
+
+										<tbody>
+											<tr>
+												<td>LBE</td>
+												<td>Numeric (integer)</td>
+												<td>Baseline fetal heart rate</td>
+												<td>106</td>
+												<td>160</td>
+												<td>133.304</td>
+											</tr>
+
+											<tr>
+												<td>LB</td>
+												<td>Numeric (integer)</td>
+												<td>Baseline fetal heart rate</td>
+												<td>106</td>
+												<td>160</td>
+												<td>133.304</td>
+											</tr>
+
+											<tr>
+												<td>AC</td>
+												<td>Numeric (integer)</td>
+												<td>Number of accelerations</td>
+												<td>0</td>
+												<td>26</td>
+												<td>2.722</td>
+											</tr>
+
+											<tr>
+												<td>FM</td>
+												<td>Numeric (integer)</td>
+												<td>Number of fetal movements</td>
+												<td>0</td>
+												<td>564</td>
+												<td>7.241</td>
+											</tr>
+
+											<tr>
+												<td>UC</td>
+												<td>Numeric (integer)</td>
+												<td>Number of uterine contractions</td>
+												<td>0</td>
+												<td>23</td>
+												<td>3.660</td>
+											</tr>
+
+											<tr>
+												<td>ASTV</td>
+												<td>Numeric (integer)</td>
+												<td>Percentage of time with abnormal short-term variability</td>
+												<td>12</td>
+												<td>87</td>
+												<td>46.990</td>
+											</tr>
+
+											<tr>
+												<td>MSTV</td>
+												<td>Numeric (continuous)</td>
+												<td>Mean value of short-term variability</td>
+												<td>0.2</td>
+												<td>7.0</td>
+												<td>1.333</td>
+											</tr>
+
+											<tr>
+												<td>ALTV</td>
+												<td>Numeric (integer)</td>
+												<td>Percentage of time with abnormal long-term variability</td>
+												<td>0</td>
+												<td>91</td>
+												<td>9.847</td>
+											</tr>
+
+											<tr>
+												<td>MLTV</td>
+												<td>Numeric (continuous)</td>
+												<td>Mean value of long-term variability</td>
+												<td>0</td>
+												<td>50.7</td>
+												<td>8.188</td>
+											</tr>
+
+											<tr>
+												<td>DL</td>
+												<td>Numeric (integer)</td>
+												<td>Number of light decelerations</td>
+												<td>0</td>
+												<td>16</td>
+												<td>1.570</td>
+											</tr>
+
+											<tr>
+												<td>DS</td>
+												<td>Numeric (integer)</td>
+												<td>Number of severe decelerations</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.003</td>
+											</tr>
+
+											<tr>
+												<td>DP</td>
+												<td>Numeric (integer)</td>
+												<td>Number of prolonged decelerations</td>
+												<td>0</td>
+												<td>4</td>
+												<td>0.126</td>
+											</tr>
+
+
+											<tr>
+												<td>Min</td>
+												<td>Numeric (integer)</td>
+												<td>Histogram minimum</td>
+												<td>50</td>
+												<td>159</td>
+												<td>93.579</td>
+											</tr>
+
+											<tr>
+												<td>Mean</td>
+												<td>Numeric (integer)</td>
+												<td>Histogram mean</td>
+												<td>73</td>
+												<td>182</td>
+												<td>134.611</td>
+											</tr>
+
+											<tr>
+												<td>Variance</td>
+												<td>Numeric (integer)</td>
+												<td>Histogram variance</td>
+												<td>0</td>
+												<td>269</td>
+												<td>18.808</td>
+											</tr>
+
+											<tr>
+												<td>Tendency</td>
+												<td>Numeric (integer)</td>
+												<td>Histogram tendency (-1 = left, 0 = stable, 1 = right)</td>
+												<td>-1</td>
+												<td>1</td>
+												<td>0.320</td>
+											</tr>
+
+											<tr>
+												<td>A</td>
+												<td>Binary</td>
+												<td>Calm sleep state</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.181</td>
+											</tr>
+
+											<tr>
+												<td>B</td>
+												<td>Binary</td>
+												<td>REM sleep state</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.272</td>
+											</tr>
+
+											<tr>
+												<td>C</td>
+												<td>Binary</td>
+												<td>Calm wakefulness state</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.025</td>
+											</tr>
+
+											<tr>
+												<td>D</td>
+												<td>Binary</td>
+												<td>Active wakefulness pattern</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.038</td>
+											</tr>
+
+											<tr>
+												<td>E</td>
+												<td>Binary</td>
+												<td>Agitated pattern</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.034</td>
+											</tr>
+
+											<tr>
+												<td>AD</td>
+												<td>Binary</td>
+												<td>Accelerative-decelerative pattern</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.156</td>
+											</tr>
+
+											<tr>
+												<td>DE</td>
+												<td>Binary</td>
+												<td>Decelerative episode</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.119</td>
+											</tr>
+
+											<tr>
+												<td>LD</td>
+												<td>Binary</td>
+												<td>Light deceleration pattern</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.050</td>
+											</tr>
+
+											<tr>
+												<td>FS</td>
+												<td>Binary</td>
+												<td>Fetal stress pattern</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.032</td>
+											</tr>
+
+											<tr>
+												<td>SUSP</td>
+												<td>Binary</td>
+												<td>Suspicious pattern indicator</td>
+												<td>0</td>
+												<td>1</td>
+												<td>0.093</td>
+											</tr>
+
+											<tr>
+												<td>CLASS</td>
+												<td>Categorical</td>
+												<td>Original CTG classification (1–10)</td>
+												<td>1</td>
+												<td>10</td>
+												<td>4.510</td>
+											</tr>
+
+											<tr>
+												<td>NSP</td>
+												<td>Categorical (Target)</td>
+												<td>Fetal health class (1 = Normal, 2 = Suspect, 3 = Pathological)</td>
+												<td>1</td>
+												<td>3</td>
+												<td>1.304</td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+
+									
+
+
+									<hr />
+								</section>
+
+								<section id="data_cleaning_and_Preprocessing">
+									<h2>Data Cleaning and Preprocessing</h2>
+									<p>The "variance" feature was excluded from the dataset due to its unrealistic 
+										values, which rendered it uninterpretable. All values of DR were 0.0 so 
+										this feature was removed because it did not add any information to the 
+										dataset. Following feature importance analysis, the dataset was refined 
+										to 28 features. A correlation test was performed to eliminate features 
+										that were highly correlated.</p>
+
+										 Duplicate records were evaluated to prevent data leakage and ensure 
+										 reliable model performance. Exact duplicate rows were removed prior to 
+										 model training. Duplicate feature combinations with conflicting fetal 
+										 health labels were reviewed and removed because identical input 
+										 measurements with different classifications introduced ambiguity 
+										 into the supervised learning process.</p>
+
+										 Two incomplete records containing substantial missing data were 
+										 identified during data cleaning. One record was almost entirely empty, 
+										 while the other lacked the majority of predictor variables and the target 
+										 label. Because these records could not be reliably imputed and 
+										 represented less than 0.1% of the dataset, they were removed prior to 
+										 model development. </p>
+									<hr />
+								</section>
+
+								<section id="exploratory_data_analysis">
+									<h2>Exploratory Data Analysis</h2>
+									
+										<p>The figure below shows the distribution of each of the features.  
+											LBE, LB, ASTV, and Mean appear to have a normal distribution, while the other 
+											non categorical features appear to be skewed right. The NSP distribution shows that there are significantly 
+											more NSP = 1 (normal) instances than there are NSP = 2 (suspect) or NSP = 3 
+											(pathological) instances. This is because most fetuses are healthy.</p>
+										<h3 style="text-align: center;">Histograms of Distributions</h3>
+										<span class="image fit"><img src="images/Cardio1.png" alt="" /></span>
+									
+									<hr />
+								</section>
+
+								<section id="feature_engineering_and_selection">
+									<h2>Feature Engineering and Selection</h2>
+									<p>First, the columns “FileName”, “Date”, “SegFile”, “b”, and “e” 
+										were dropped because they are not physiological measurements. 
+										Then, features with a correlation less than 0.05 were dropped. 
+										These features were “Nzeros”, “Nmax”, and “Max.” Then, feature 
+										pairs with a correlation coefficient greater than 0.8 were evaluated, 
+										and one feature from each highly correlated pair was removed. The 
+										features removed were “Width”, “Mode”, and “Median.” The DR feature was removed
+										due to the fact that all values of that feature were zero. The variance
+										feature was removed because after careful examination, some of the values
+										appeared to be unrealistic. Because the legitimacy of the variance values
+										were brought into question, the feature was removed. 
+									</p>
+									<hr />
+								</section>
+
+								<section id="model_development">
+									<h2>Model Development</h2>
+									<p>The data was then split into training and testing datasets with 
+										80% of the data for training and 20% for testing. The data was 
+										stratified based on the target feature to ensure that the proportions 
+										of classes 1, 2, and 3 were consistent across both the training and 
+										testing datasets. Outliers were reviewed with box plots, and then more
+										closely reviewed by examining specific data entries. It was determined
+										that all outliers were based on real data, so no outliers were removed.</p>
+
+										<h3 style="text-align: center;">Boxplots of Features</h3>
+										<span class="image fit"><img src="images/boxplot.png" alt="" /></span>
+
+									<p>
+									Five classification models were trained and evaluated using the same training 
+									and testing data. The models chosen fore comparison were Logistic Regression, 
+									Decision Tree, Random Forest, SVM, and Nerual Network. The Decision Tree and Random 
+									Forest were trained on the raw data while
+									Logistic regression, SVM, and Neural Networks were all trained on standardized data. 
+									standardized data. 
+									Because the dataset 
+									contained class imbalance, Macro F1-score 
+									was used alongside accuracy to compare model performance. 
+
+									
+									</p>
+								
+
+									
+				
+								<!-- Model Comparison Table -->
+								<h3 style="text-align: center;">Model Comparison</h3>
+
+								<div class="table-wrapper">
+									<table class="alt">
+										<thead>
+											<tr>
+												<th>Model</th>
+												<th>Accuracy</th>
+												<th>Macro F1</th>
+												<th>Reason for considering the model</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Logistic Regression</td>
+												<td>97.9%</td>
+												<td>0.967</td>
+												<td>Simple, interpretable baseline</td>
+											</tr>
+											<tr>
+												<td>Decision Tree</td>
+												<td>97.9%</td>
+												<td>0.966</td>
+												<td>Easy to visualize and explain</td>
+											</tr>
+											<tr>
+												<td><strong>Random Forest</strong></td>
+												<td><strong>98.1%</strong></td>
+												<td><strong>0.970</strong></td>
+												<td><strong>Strong ensemble method that often performs well</strong></td>
+											</tr>
+											<tr>
+												<td>SVM</td>
+												<td>98.6%</td>
+												<td>0.976</td>
+												<td>Effective for many classification problems</td>
+											</tr>
+											<tr>
+												<td>Neural Network</td>
+												<td>98.1%</td>
+												<td>0.970</td>
+												<td>Can capture more complex relationships</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								
+
+								<p> Although the SVM achieved marginally higher performance, Random Forest 
+										was selected as the final model because it provided comparable predictive 
+										performance while offering greater interpretability and computational efficiency. Hyperparameters were selected using 5-fold cross-validation on the training data. 
+									The optimized model achieved a mean cross-validation accuracy of 99.1%. When 
+									evaluated on the held-out test set, the model achieved 98.1% accuracy, indicating 
+									that it generalized well to unseen data. </p>
+
+
+								<hr />
+								</section>
+
+								<section id="model_evaluation">
+									<h2>Model Evaluation</h2>
+									<p>The final model was evaluated on a held-out test set containing 426 observations. 
+										Performance was assessed using accuracy, precision, recall, and F1-score. The model 
+										achieved an overall test accuracy of 98.12%, indicating that it correctly classified 
+										the vast majority of fetal health records. </p>
+
+
+									<h3>Random Forest Model Performance</h3>
+
+									<p><strong>Test Accuracy:</strong> 98.12%</p>
+
+									<table border="1" cellspacing="0" cellpadding="8">
+										<thead>
+											<tr>
+												<th>Class</th>
+												<th>Precision</th>
+												<th>Recall</th>
+												<th>F1-Score</th>
+												<th>Support</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>1.0 (Normal)</td>
+												<td>0.99</td>
+												<td>0.99</td>
+												<td>0.99</td>
+												<td>333</td>
+											</tr>
+											<tr>
+												<td>2.0 (Suspect)</td>
+												<td>0.94</td>
+												<td>0.94</td>
+												<td>0.94</td>
+												<td>64</td>
+											</tr>
+											<tr>
+												<td>3.0 (Pathological)</td>
+												<td>1.00</td>
+												<td>0.97</td>
+												<td>0.98</td>
+												<td>29</td>
+											</tr>
+										
+									</table>
+
+									<p>The model performed exceptionally well on the Normal class, with precision, recall, and F1-score 
+										all equal to 0.99. This indicates that normal fetal health cases were identified with very high 
+										reliability. Performance on the Suspect class was lower, with precision and recall both equal to 0.94. 
+										This suggests that the model occasionally confuses suspect cases with the other classes, 
+										which is expected because suspect cases often represent an intermediate condition. For the Pathological 
+										class, the model achieved a precision of 1.00 and a recall of 0.97, resulting in an F1-score of 
+										0.98. The perfect precision indicates that all cases predicted as pathological were truly 
+										pathological, while the slightly lower recall indicates that a very small number of pathological 
+										cases were missed.</p>
+
+
+
+									<h3 style="text-align: center;">Confusion Matrix</h3>
+										<span class="image fit"><img src="images/confusion_matrix.png" alt="" /></span>
+									
+										<p> The confusion matrix indicates that no pathological cases were misclassified as normal, and no 
+											normal cases were misclassified as pathological. This demonstrates that the model effectively 
+											distinguishes between the two most clinically distinct classes, avoiding the most critical 
+											classification errors. The receiver operating characteristic (ROC) analysis demonstrated excellent 
+											discriminative performance across all classes. The area under the curve (AUC) was 0.992 for the 
+											Normal class, 0.979 for the Suspect class, and 1.000 for the Pathological class, indicating outstanding 
+											class separation, with near-perfect discrimination for pathological cases.
+
+										</p>
+
+										<h3 style="text-align: center;">ROC Curve</h3>
+										<span class="image fit"><img src="images/roc_curve.png" alt="" /></span>
+
+
+										<p>To account for class imbalance, macro-averaged metrics were also considered. The model 
+										obtained a macro-average precision of 0.98, macro-average recall of 0.96, and macro-average 
+										F1-score of 0.97, demonstrating strong and balanced performance across all three classes. Overall, 
+										the evaluation results indicate that the model is highly effective for fetal health classification, 
+										with particularly strong performance in identifying normal and pathological cases and only modestly 
+										reduced performance on suspect cases. </p>
+
+									<hr />
+								</section>
+
+								<section id="conclusion">
+									<h2>Conclusion</h2>
+									<p>This study demonstrated that machine learning can accurately classify fetal health using
+										cardiotocography (CTG) measurements. Following comprehensive data preprocessing, feature
+										selection, and model comparison, the Random Forest classifier was selected as the final model
+										due to its excellent predictive performance, computational efficiency, and interpretability.
+									</p>
+
+									<p>
+										The optimized Random Forest model achieved a mean cross-validation accuracy of
+										99.1% and a test accuracy of 98.1%, indicating strong
+										generalization to previously unseen data. The model produced high precision, recall, and
+										F1-scores across all three fetal health classes, with particularly strong performance in
+										identifying both normal and pathological cases. Importantly, the confusion matrix showed that
+										no normal cases were classified as pathological and no pathological cases were classified as
+										normal, reducing the likelihood of the most clinically significant classification errors.
+										ROC analysis further confirmed excellent discriminative ability, with AUC values approaching
+										or reaching 1.0 for all classes.
+									</p>
+
+									<p>
+										Although the Suspect class proved to be the most challenging to classify,
+										the model still achieved strong performance, reflecting the inherent overlap between
+										intermediate fetal health conditions. The use of macro-averaged evaluation metrics ensured
+										that performance was assessed fairly despite the class imbalance present in the dataset.
+									</p>
+
+									<p>
+										Overall, the results indicate that the Random Forest model is highly effective for automated
+										fetal health classification and has the potential to serve as a clinical decision-support tool
+										that complements, rather than replaces, expert interpretation of cardiotocography recordings.
+										Future work could focus on validating the model using external clinical datasets,
+										incorporating additional maternal and fetal health variables, and exploring explainable
+										artificial intelligence techniques to further improve transparency and clinician trust. These
+										enhancements would strengthen the model's applicability in real-world healthcare settings and
+										support broader adoption of machine learning for prenatal care.</p>
+									<hr />
+								</section>
+
+
+								<section id="references">
+									<h2>References</h2>
+									<p>Campos, D. & Bernardes, J. (2000). Cardiotocography [Dataset]. UCI Machine Learning 
+										Repository. https://doi.org/10.24432/C51S4N.</p>
+									<hr />
+								</section>
+
+
+
+									
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
